@@ -4,19 +4,13 @@
 
 int main(void)
 {
-    int matrix[3][2] = {
-        {1, 2},
-        {3, 4},
-        {5, 6}};
+    Matrix *m = new_mat(2, 3);
+    fill_matrix_with(m, 1);
+    print_matrix(m);
+    Matrix *m_t = transpose(m);
+    printf("transposed: \n");
+    print_matrix(m_t);
 
-    for (int y = 0; y < 2; y++)
-    {
-
-        for (int x = 0; x < 3; x++)
-        {
-            printf("%i ", matrix[x][y]);
-        }
-        printf("\n");
-    }
+    add_mats(m, m_t);
     return 0;
 }
