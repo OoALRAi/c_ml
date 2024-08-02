@@ -59,10 +59,12 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
     if (m1 == NULL)
     {
         fprintf(stderr, "m1 is null!");
+        return NULL;
     }
     if (m2 == NULL)
     {
         fprintf(stderr, "m2 is null!");
+        return NULL;
     }
     if (m1->cols != m2->cols)
     {
@@ -71,6 +73,7 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
             "cannot add matrices of different sizes!\nm1 width = %i while m2 width = %i\n",
             m1->cols,
             m2->cols);
+        return NULL;
     }
     else if (m1->rows != m2->rows)
     {
@@ -79,6 +82,7 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
             "cannot add matrices of different sizes!\nm1 height = %i while m2 height = %i\n",
             m1->rows,
             m2->rows);
+        return NULL;
     }
 
     Matrix *result_mat = new_mat(m1->cols, m1->rows);
@@ -95,12 +99,21 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
 
 int mat_equals(Matrix *m1, Matrix *m2)
 {
+    if (
+        m1 == NULL ||
+        m2 == NULL ||
+        m1->cols != m2->cols ||
+        m1->rows != m2->rows)
+    {
+        return 0;
+    }
+    Matrix *result_mat = new_mat(m1->cols, m1->rows);
     for (size_t y = 0; y < m1->rows; y++)
     {
-
         for (size_t x = 0; x < m1->cols; x++)
         {
             result_mat->data[y][x] = m1->data[y][x] + m2->data[y][x];
         }
     }
+    return 1;
 }

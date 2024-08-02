@@ -11,6 +11,9 @@ int main(void)
     printf("transposed: \n");
     print_matrix(m_t);
 
-    add_mats(m, m_t);
+    Matrix *result = add_mats(m, m);
+    printf("m1 + m1: \n");
+
+    print_matrix(result);
     return 0;
 }
