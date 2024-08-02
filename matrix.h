@@ -9,6 +9,7 @@ typedef struct Matrix
 } Matrix;
 
 Matrix *new_mat(int cols, int rows);
+void free_mat(Matrix *m);
 
 void fill_matrix_with(Matrix *m, double value);
 
@@ -18,6 +19,7 @@ Matrix *transpose(Matrix *m);
 
 Matrix *add_mats(Matrix *m1, Matrix *m2);
 
+int mat_size_equals(Matrix *m1, Matrix *m2);
 int mat_equals(Matrix *m1, Matrix *m2);
 
 #endif // MATRIX_H

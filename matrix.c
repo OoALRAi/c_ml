@@ -15,6 +15,20 @@ Matrix *new_mat(int cols, int rows)
     return m;
 }
 
+void free_mat(Matrix *m)
+{
+    if (m == NULL)
+    {
+        return;
+    }
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        free(m->data[y]);
+    }
+    free(m->data);
+    free(m);
+}
+
 void fill_matrix_with(Matrix *m, double value)
 {
     for (int y = 0; y < m->rows; y++)
@@ -56,35 +70,17 @@ Matrix *transpose(Matrix *m)
 
 Matrix *add_mats(Matrix *m1, Matrix *m2)
 {
-    if (m1 == NULL)
-    {
-        fprintf(stderr, "m1 is null!");
-        return NULL;
-    }
-    if (m2 == NULL)
-    {
-        fprintf(stderr, "m2 is null!");
-        return NULL;
-    }
-    if (m1->cols != m2->cols)
+    if (!mat_size_equals(m1, m2))
     {
         fprintf(
             stderr,
-            "cannot add matrices of different sizes!\nm1 width = %i while m2 width = %i\n",
+            "cannot add (%ix%i) and (%ix%i)!\n",
+            m1->rows,
             m1->cols,
+            m2->rows,
             m2->cols);
         return NULL;
     }
-    else if (m1->rows != m2->rows)
-    {
-        fprintf(
-            stderr,
-            "cannot add matrices of different sizes!\nm1 height = %i while m2 height = %i\n",
-            m1->rows,
-            m2->rows);
-        return NULL;
-    }
-
     Matrix *result_mat = new_mat(m1->cols, m1->rows);
     for (size_t y = 0; y < m1->rows; y++)
     {
@@ -97,7 +93,7 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
     return result_mat;
 }
 
-int mat_equals(Matrix *m1, Matrix *m2)
+int mat_size_equals(Matrix *m1, Matrix *m2)
 {
     if (
         m1 == NULL ||
@@ -107,6 +103,12 @@ int mat_equals(Matrix *m1, Matrix *m2)
     {
         return 0;
     }
+}
+
+int mat_equals(Matrix *m1, Matrix *m2)
+{
+    if (mat_size_equals(m1, m2))
+        return 0;
     Matrix *result_mat = new_mat(m1->cols, m1->rows);
     for (size_t y = 0; y < m1->rows; y++)
     {

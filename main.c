@@ -4,16 +4,11 @@
 
 int main(void)
 {
-    Matrix *m = new_mat(2, 3);
-    fill_matrix_with(m, 1);
+    Matrix *m = new_mat(2, 2);
+    fill_matrix_with(m, 0);
     print_matrix(m);
-    Matrix *m_t = transpose(m);
-    printf("transposed: \n");
-    print_matrix(m_t);
+    free_mat(m);
+    print_matrix(m);
 
-    Matrix *result = add_mats(m, m);
-    printf("m1 + m1: \n");
-
-    print_matrix(result);
     return 0;
 }
