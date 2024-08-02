@@ -103,6 +103,7 @@ int mat_size_equals(Matrix *m1, Matrix *m2)
     {
         return 0;
     }
+    return 1;
 }
 
 int mat_equals(Matrix *m1, Matrix *m2)
