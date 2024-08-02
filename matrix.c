@@ -87,6 +87,23 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
     }
     return result_mat;
 }
+Matrix *subtract_mats(Matrix *m1, Matrix *m2)
+{
+    Matrix *result_mat = new_mat(m1->cols, m1->rows);
+    for (size_t y = 0; y < m1->rows; y++)
+    {
+        for (size_t x = 0; x < m1->cols; x++)
+        {
+            result_mat->data[y][x] = m1->data[y][x] - m2->data[y][x];
+        }
+    }
+    return result_mat;
+}
+
+Matrix *mul_mats(Matrix *m1, Matrix *m2)
+{
+    return NULL;
+}
 
 int mat_size_equals(Matrix *m1, Matrix *m2)
 {

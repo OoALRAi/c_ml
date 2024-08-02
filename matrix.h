@@ -18,6 +18,8 @@ void print_matrix(Matrix *m);
 Matrix *transpose(Matrix *m);
 
 Matrix *add_mats(Matrix *m1, Matrix *m2);
+Matrix *subtract_mats(Matrix *m1, Matrix *m2);
+Matrix *mul_mats(Matrix *m1, Matrix *m2);
 
 int mat_size_equals(Matrix *m1, Matrix *m2);
 int mat_equals(Matrix *m1, Matrix *m2);
