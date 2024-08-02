@@ -4,6 +4,14 @@
 
 Matrix *new_mat(int cols, int rows)
 {
+    if (cols <= 0 || rows <= 0)
+    {
+        fprintf(
+            stderr,
+            "cannot allocate a matrix of size (%ix%i), smallest matrix to be allocated (1x1)!",
+            cols, rows);
+        return NULL;
+    }
     Matrix *m = malloc(sizeof(Matrix));
     m->cols = cols;
     m->rows = rows;
@@ -56,7 +64,6 @@ Matrix *transpose(Matrix *m)
 {
     int old_cols = m->cols;
     int old_rows = m->rows;
-
     Matrix *new_matrix = new_mat(old_rows, old_cols);
     for (size_t y = 0; y < old_rows; y++)
     {
@@ -70,21 +77,9 @@ Matrix *transpose(Matrix *m)
 
 Matrix *add_mats(Matrix *m1, Matrix *m2)
 {
-    if (!mat_size_equals(m1, m2))
-    {
-        fprintf(
-            stderr,
-            "cannot add (%ix%i) and (%ix%i)!\n",
-            m1->rows,
-            m1->cols,
-            m2->rows,
-            m2->cols);
-        return NULL;
-    }
     Matrix *result_mat = new_mat(m1->cols, m1->rows);
     for (size_t y = 0; y < m1->rows; y++)
     {
-
         for (size_t x = 0; x < m1->cols; x++)
         {
             result_mat->data[y][x] = m1->data[y][x] + m2->data[y][x];
