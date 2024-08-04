@@ -1,6 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+// a matrix is represented as (rows X cols)
 typedef struct Matrix
 {
     int cols;

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Matrix *new_mat(int cols, int rows)
+Matrix *new_mat(int rows, int cols)
 {
     if (cols <= 0 || rows <= 0)
     {
@@ -87,6 +87,7 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
     }
     return result_mat;
 }
+
 Matrix *subtract_mats(Matrix *m1, Matrix *m2)
 {
     Matrix *result_mat = new_mat(m1->cols, m1->rows);
@@ -102,7 +103,38 @@ Matrix *subtract_mats(Matrix *m1, Matrix *m2)
 
 Matrix *mul_mats(Matrix *m1, Matrix *m2)
 {
-    return NULL;
+    // (rows_1 X cols_1) * (rows_2 X cols_2)
+    // applicable for cols_1 = rows_2
+    if (m1->cols != m2->rows)
+    {
+        fprintf(
+            stderr,
+            "cannot multiply (%ix%i) with (%ix%i) matrices!\n",
+            m1->rows, m1->cols,
+            m2->rows, m2->cols);
+        exit(-1);
+    }
+
+    // result matrix size = (rows_1 X cols_2)
+    Matrix *result = new_mat(m1->rows, m2->cols);
+
+    // for each row in m1,
+    for (size_t row_1 = 0; row_1 < m1->rows; row_1++)
+    {
+        // for each col in m2:
+        for (size_t col_2 = 0; col_2 < m2->cols; col_2++)
+        {
+            double sum = 0;
+            // for value in a row_1 and col_2
+            //      do: value_m1 * value_m2
+            for (size_t i = 0; i < m1->cols; i++)
+            {
+                sum += m1->data[row_1][i] * m2->data[i][col_2];
+            }
+            result->data[row_1][col_2] = sum;
+        }
+    }
+    return result;
 }
 
 int mat_size_equals(Matrix *m1, Matrix *m2)
