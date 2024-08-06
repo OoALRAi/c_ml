@@ -37,19 +37,57 @@ void free_mat(Matrix *m)
     free(m);
 }
 
-void fill_matrix_with(Matrix *m, double value)
+void fill_matrix_starting_with(Matrix *m, double value)
 {
     for (int y = 0; y < m->rows; y++)
     {
         for (int x = 0; x < m->cols; x++)
         {
-            m->data[y][x] = ++value;
+            m->data[y][x] = value++;
+        }
+    }
+}
+void fill_matrix_with_constant(Matrix *m, double value)
+{
+    for (int y = 0; y < m->rows; y++)
+    {
+        for (int x = 0; x < m->cols; x++)
+        {
+            m->data[y][x] = value;
         }
     }
 }
 
+void set_mat_data(Matrix *m, double *values)
+{
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        for (size_t x = 0; x < m->cols; x++)
+        {
+            m->data[y][x] = values[y * m->cols + x];
+        }
+    }
+}
+
+void set_mat_value(Matrix *m, double value, int x, int y)
+{
+    if (x < 0 || y < 0 || x > +m->cols || y > +m->rows)
+    {
+        fprintf(stderr, "coordinates outside the matrix boundaries!\n");
+        fprintf(stderr, "matrix size = (%ix%i), position: y=%i, x=%i\n", m->rows, m->cols, y, x);
+        exit(-1);
+    }
+    m->data[y][x] = value;
+}
+
 void print_matrix(Matrix *m)
 {
+    if (m == NULL)
+    {
+        printf("null\n");
+        return;
+    }
+    printf("(%i, %i) matrix:\n", m->rows, m->cols);
     for (int y = 0; y < m->rows; y++)
     {
         for (int x = 0; x < m->cols; x++)
@@ -62,12 +100,10 @@ void print_matrix(Matrix *m)
 
 Matrix *transpose(Matrix *m)
 {
-    int old_cols = m->cols;
-    int old_rows = m->rows;
-    Matrix *new_matrix = new_mat(old_rows, old_cols);
-    for (size_t y = 0; y < old_rows; y++)
+    Matrix *new_matrix = new_mat(m->cols, m->rows);
+    for (size_t y = 0; y < m->rows; y++)
     {
-        for (size_t x = 0; x < old_cols; x++)
+        for (size_t x = 0; x < m->cols; x++)
         {
             new_matrix->data[x][y] = m->data[y][x];
         }
@@ -77,7 +113,11 @@ Matrix *transpose(Matrix *m)
 
 Matrix *add_mats(Matrix *m1, Matrix *m2)
 {
-    Matrix *result_mat = new_mat(m1->cols, m1->rows);
+    if (!mat_size_equals(m1, m2))
+    {
+        return NULL;
+    }
+    Matrix *result_mat = new_mat(m1->rows, m1->cols);
     for (size_t y = 0; y < m1->rows; y++)
     {
         for (size_t x = 0; x < m1->cols; x++)
@@ -90,7 +130,11 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
 
 Matrix *subtract_mats(Matrix *m1, Matrix *m2)
 {
-    Matrix *result_mat = new_mat(m1->cols, m1->rows);
+    if (!mat_size_equals(m1, m2))
+    {
+        return NULL;
+    }
+    Matrix *result_mat = new_mat(m1->rows, m1->cols);
     for (size_t y = 0; y < m1->rows; y++)
     {
         for (size_t x = 0; x < m1->cols; x++)
@@ -152,14 +196,17 @@ int mat_size_equals(Matrix *m1, Matrix *m2)
 
 int mat_equals(Matrix *m1, Matrix *m2)
 {
-    if (mat_size_equals(m1, m2))
+    if (!mat_size_equals(m1, m2))
         return 0;
-    Matrix *result_mat = new_mat(m1->cols, m1->rows);
     for (size_t y = 0; y < m1->rows; y++)
     {
         for (size_t x = 0; x < m1->cols; x++)
         {
-            result_mat->data[y][x] = m1->data[y][x] + m2->data[y][x];
+            if (m1->data[y][x] != m2->data[y][x])
+            {
+                printf("%lu, %lu", y, x);
+                return 0;
+            }
         }
     }
     return 1;
