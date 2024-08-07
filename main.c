@@ -18,6 +18,10 @@ int main(void)
     Matrix *out = nn_linear_forward(l, x);
     printf("output:\n");
     print_matrix(out);
+    out->data[0][0] = -2;
+    ReLU *relu = nn_new_relu();
+    Matrix *activated = nn_relu_forward(relu, out);
+    print_matrix(activated);
 
     return 0;
 }
