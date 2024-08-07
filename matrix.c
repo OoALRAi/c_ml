@@ -92,7 +92,7 @@ void print_matrix(Matrix *m)
     {
         for (int x = 0; x < m->cols; x++)
         {
-            printf("%2.2f ", m->data[y][x]);
+            printf("%f ", m->data[y][x]);
         }
         printf("\n");
     }

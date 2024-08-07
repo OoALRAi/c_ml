@@ -1,22 +1,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "matrix.h"
+#include "nn.h"
 
 int main(void)
 {
-    Matrix *m1 = new_mat(1, 2);
-    fill_matrix_starting_with(m1, 1);
-    print_matrix(m1);
-    Matrix *w = new_mat(2, 2);
-    fill_matrix_starting_with(w, 1);
-    print_matrix(w);
-    Matrix *b = new_mat(1, 2);
-    fill_matrix_with_constant(b, 1);
-    print_matrix(b);
-    printf("x * w + b = \n");
-    Matrix *m1_2 = mul_mats(m1, w);
-    Matrix *m1_2_b = add_mats(m1_2, b);
-    print_matrix(m1_2_b);
+
+    Matrix *x = new_mat(2, 1);
+    fill_matrix_starting_with(x, 1);
+    printf("input:\n");
+    print_matrix(x);
+    LinearLayer *l = nn_new_linear_layer(2, 4);
+    printf("weights:\n");
+    print_matrix(l->w);
+    printf("bias:\n");
+    print_matrix(l->b);
+    Matrix *out = nn_linear_forward(l, x);
+    printf("output:\n");
+    print_matrix(out);
 
     return 0;
 }

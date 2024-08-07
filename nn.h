@@ -13,4 +13,7 @@ LinearLayer *nn_new_linear_layer(int input_size, int output_size);
 
 Matrix *nn_linear_forward(LinearLayer *l, Matrix *x);
 
+double rand_double();
+void init_weights(Matrix *m);
+
 #endif // NN_H
