@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 Matrix *new_mat(int rows, int cols)
 {
@@ -210,4 +211,36 @@ int mat_equals(Matrix *m1, Matrix *m2)
         }
     }
     return 1;
+}
+
+double find_max(Matrix *m)
+{
+    double max = INT_MIN;
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        for (size_t x = 0; x < m->cols; x++)
+        {
+            if (m->data[y][x] > max)
+            {
+                max = m->data[y][x];
+            }
+        }
+    }
+    return max;
+}
+double find_min(Matrix *m)
+{
+
+    double min = INT_MAX;
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        for (size_t x = 0; x < m->cols; x++)
+        {
+            if (m->data[y][x] < min)
+            {
+                min = m->data[y][x];
+            }
+        }
+    }
+    return min;
 }

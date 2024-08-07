@@ -28,5 +28,7 @@ Matrix *mul_mats(Matrix *m1, Matrix *m2);
 
 int mat_size_equals(Matrix *m1, Matrix *m2);
 int mat_equals(Matrix *m1, Matrix *m2);
+double find_max(Matrix *m);
+double find_min(Matrix *m);
 
 #endif // MATRIX_H

@@ -40,8 +40,13 @@ void init_weights(Matrix *m)
 
 Matrix *nn_linear_forward(LinearLayer *l, Matrix *x)
 {
+    l->x = x;
     Matrix *x_t = transpose(x);
     Matrix *out = mul_mats(x_t, l->w);
     Matrix *out_b = add_mats(out, l->b);
     return out_b;
+}
+
+void normalize_weights(Matrix *m)
+{
 }

@@ -15,5 +15,6 @@ Matrix *nn_linear_forward(LinearLayer *l, Matrix *x);
 
 double rand_double();
 void init_weights(Matrix *m);
+void normalize_weights(Matrix *m);
 
 #endif // NN_H
