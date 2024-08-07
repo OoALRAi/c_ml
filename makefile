@@ -3,7 +3,7 @@ CC=gcc
 FLAGS=-Wall
 
 output: main.o matrix.o nn.o
-	$(CC) $(FLAGS) main.o matrix.o nn.o -o output
+	$(CC) $(FLAGS) main.o matrix.o nn.o -o output -lm
 
 main.o: main.c
 	$(CC) $(FLAGS) -c main.c

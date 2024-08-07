@@ -75,6 +75,20 @@ Matrix *nn_relu_forward(ReLU *r, Matrix *m)
     return result;
 }
 
+Matrix *nn_linear_backward(LinearLayer *l, Matrix *next_grad)
+{
+    return NULL;
+}
+
+Matrix *mean_squared_error(Matrix *y_hat, Matrix *y)
+{
+    Matrix *result = subtract_mats(y, y_hat);
+    result = element_wise_pow(result, 2);
+    divide_by_value(result, y->rows);
+
+    return result;
+}
+
 void normalize_weights(Matrix *m)
 {
     (void)m;

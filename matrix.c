@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <math.h>
 
 Matrix *new_mat(int rows, int cols)
 {
@@ -180,6 +181,31 @@ Matrix *mul_mats(Matrix *m1, Matrix *m2)
         }
     }
     return result;
+}
+
+Matrix *element_wise_pow(Matrix *m, double e)
+{
+    Matrix *result = new_mat(m->rows, m->cols);
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        // for each col in m2:
+        for (size_t x = 0; x < m->cols; x++)
+        {
+            result->data[y][x] = pow(m->data[y][x], e);
+        }
+    }
+    return result;
+}
+void divide_by_value(Matrix *m, double value)
+{
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        // for each col in m2:
+        for (size_t x = 0; x < m->cols; x++)
+        {
+            m->data[y][x] /= value;
+        }
+    }
 }
 
 int mat_size_equals(Matrix *m1, Matrix *m2)

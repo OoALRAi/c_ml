@@ -25,6 +25,8 @@ Matrix *transpose(Matrix *m);
 Matrix *add_mats(Matrix *m1, Matrix *m2);
 Matrix *subtract_mats(Matrix *m1, Matrix *m2);
 Matrix *mul_mats(Matrix *m1, Matrix *m2);
+Matrix *element_wise_pow(Matrix *m, double e);
+void divide_by_value(Matrix *m, double value);
 
 int mat_size_equals(Matrix *m1, Matrix *m2);
 int mat_equals(Matrix *m1, Matrix *m2);
