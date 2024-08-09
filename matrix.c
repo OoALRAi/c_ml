@@ -217,26 +217,30 @@ Matrix *element_wise_pow(Matrix *m, double e)
     }
     return result;
 }
-void divide_by_value(Matrix *m, double value)
+Matrix *divide_by_value(Matrix *m, double value)
 {
+    Matrix *result = new_mat(m->rows, m->cols);
     for (size_t y = 0; y < m->rows; y++)
     {
         // for each col in m2:
         for (size_t x = 0; x < m->cols; x++)
         {
-            m->data[y][x] /= value;
+            result->data[y][x] = m->data[y][x] / value;
         }
     }
+    return result;
 }
-void multiply_with_value(Matrix *m, double value)
+Matrix *multiply_with_value(Matrix *m, double value)
 {
+    Matrix *result = new_mat(m->rows, m->cols);
     for (size_t y = 0; y < m->rows; y++)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            m->data[y][x] *= value;
+            result->data[y][x] = m->data[y][x] * value;
         }
     }
+    return result;
 }
 
 int mat_size_equals(Matrix *m1, Matrix *m2)

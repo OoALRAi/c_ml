@@ -27,9 +27,9 @@ Matrix *subtract_mats(Matrix *m1, Matrix *m2);
 Matrix *mul_mats(Matrix *m1, Matrix *m2);
 Matrix *element_wise_pow(Matrix *m, double e);
 Matrix *element_wise_mats_product(Matrix *m1, Matrix *m2);
-void multiply_with_value(Matrix *m, double value);
+Matrix *multiply_with_value(Matrix *m, double value);
 
-void divide_by_value(Matrix *m, double value);
+Matrix *divide_by_value(Matrix *m, double value);
 
 int mat_size_equals(Matrix *m1, Matrix *m2);
 int mat_equals(Matrix *m1, Matrix *m2);

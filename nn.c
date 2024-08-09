@@ -85,24 +85,26 @@ Matrix *nn_relu_forward(ReLU *r, Matrix *m)
 
 Matrix *nn_linear_backward(LinearLayer *l, Matrix *next_grad, double lr)
 {
-    Matrix *next_grad_t = transpose(next_grad);
-
-    Matrix *dw = mul_mats(next_grad_t, l->x);
     Matrix *dx = mul_mats(next_grad, l->w);
-    multiply_with_value(dw, lr);
+
+    Matrix *next_grad_t = transpose(next_grad);
+    Matrix *dw = mul_mats(next_grad_t, l->x);
+    dw = multiply_with_value(dw, lr);
     l->w = subtract_mats(l->w, dw);
+
+    Matrix *db = multiply_with_value(next_grad, lr);
+    l->b = subtract_mats(l->b, db);
+
     return dx;
 }
 
 Matrix *nn_mse_forward(MSE *l, Matrix *y_hat, Matrix *y)
 {
     Matrix *sub_y_yhat = subtract_mats(y, y_hat);
-
     l->y_yhat = sub_y_yhat;
-    // l->y = y;
 
     Matrix *sub_squared = element_wise_pow(sub_y_yhat, 2);
-    divide_by_value(sub_squared, 2);
+    Matrix *mse_error_value = divide_by_value(sub_squared, 2);
     return sub_squared;
 }
 Matrix *nn_relu_backward(ReLU *relu, Matrix *next_grad)
@@ -120,8 +122,7 @@ Matrix *nn_relu_backward(ReLU *relu, Matrix *next_grad)
 
 Matrix *nn_mse_grad(MSE *l)
 {
-    multiply_with_value(l->y_yhat, -1);
-    return l->y_yhat;
+    return multiply_with_value(l->y_yhat, -1);
 }
 
 void normalize_weights(Matrix *m)
