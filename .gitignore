@@ -1,3 +1,2 @@
-output
-matrix.o
-main.o
+*output*
+*.o
