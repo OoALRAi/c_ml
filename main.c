@@ -7,6 +7,7 @@
 #define HIDDEN_SIZE 20
 #define OUTPUT_SIZE 1
 #define LEARNING_RATE 0.00001
+#define EPOOCHS 100
 
 #include <math.h>
 
@@ -27,7 +28,7 @@ int main(void)
         fill_matrix_with_constant(samples[i], random_value);
     }
 
-    for (size_t e = 0; e < 100; e++)
+    for (size_t e = 0; e < EPOOCHS; e++)
     {
         for (int i = 0; i < 1000; i++)
         {

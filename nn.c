@@ -58,8 +58,9 @@ Matrix *nn_linear_forward(LinearLayer *l, Matrix *x)
     l->x = x;
     Matrix *w_t = transpose(l->w);
     Matrix *out = mul_mats(x, w_t);
-    Matrix *out_b = add_mats(out, l->b);
-    return out_b;
+    Matrix *out_biased = add_mats(out, l->b);
+    free_mat(out);
+    return out_biased;
 }
 
 Matrix *nn_relu_forward(ReLU *r, Matrix *m)
@@ -105,8 +106,9 @@ Matrix *nn_mse_forward(MSE *l, Matrix *y_hat, Matrix *y)
 
     Matrix *sub_squared = element_wise_pow(sub_y_yhat, 2);
     Matrix *mse_error_value = divide_by_value(sub_squared, 2);
-    return sub_squared;
+    return mse_error_value;
 }
+
 Matrix *nn_relu_backward(ReLU *relu, Matrix *next_grad)
 {
     Matrix *drelu = new_mat(relu->x->rows, relu->x->cols);
