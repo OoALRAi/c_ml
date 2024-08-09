@@ -14,18 +14,28 @@ typedef struct ReLU
     Matrix *x;
 } ReLU;
 
+typedef struct MSE
+{
+    Matrix *y_yhat;
+    // Matrix *y;
+} MSE;
+
 LinearLayer *nn_new_linear_layer(int input_size, int output_size);
 ReLU *nn_new_relu();
+MSE *nn_new_mse();
 
 Matrix *nn_linear_forward(LinearLayer *l, Matrix *x);
 Matrix *nn_relu_forward(ReLU *r, Matrix *x);
 
-Matrix *nn_linear_backward(LinearLayer *l, Matrix *next_grad);
+Matrix *nn_linear_backward(LinearLayer *l, Matrix *next_grad, double lr);
+Matrix *nn_relu_backward(ReLU *relu, Matrix *next_grad);
+
+Matrix *nn_mse_grad(MSE *l);
 
 double nn_rand_double();
 void nn_init_weights(Matrix *m);
 void nn_normalize_weights(Matrix *m);
 
-Matrix *mean_squared_error(Matrix *y_hat, Matrix *y);
+Matrix *nn_mse_forward(MSE *l, Matrix *y_hat, Matrix *y);
 
 #endif // NN_H

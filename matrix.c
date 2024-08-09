@@ -129,6 +129,27 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
     }
     return result_mat;
 }
+Matrix *element_wise_mats_product(Matrix *m1, Matrix *m2)
+{
+    if (m1->cols != m2->cols || m1->rows != m2->rows)
+    {
+        fprintf(
+            stderr,
+            "cannot apply element wise product to (%ix%i) with (%ix%i) matrices!\n",
+            m1->rows, m1->cols,
+            m2->rows, m2->cols);
+        exit(-1);
+    }
+    Matrix *result = new_mat(m1->rows, m1->cols);
+    for (size_t y = 0; y < m1->rows; y++)
+    {
+        for (size_t x = 0; x < m1->cols; x++)
+        {
+            result->data[y][x] = m1->data[y][x] + m2->data[y][x];
+        }
+    }
+    return result;
+}
 
 Matrix *subtract_mats(Matrix *m1, Matrix *m2)
 {
@@ -204,6 +225,16 @@ void divide_by_value(Matrix *m, double value)
         for (size_t x = 0; x < m->cols; x++)
         {
             m->data[y][x] /= value;
+        }
+    }
+}
+void multiply_with_value(Matrix *m, double value)
+{
+    for (size_t y = 0; y < m->rows; y++)
+    {
+        for (size_t x = 0; x < m->cols; x++)
+        {
+            m->data[y][x] *= value;
         }
     }
 }
