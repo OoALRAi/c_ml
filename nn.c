@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-
-static int SEED_INITIALIZED = 0;
+#include <math.h>
 
 LinearLayer *nn_new_linear_layer(int input_size, int output_size)
 {
@@ -37,8 +36,38 @@ double nn_rand_double()
     return value;
 }
 
+double nn_normal_rand_double()
+{
+    double mean = 0.0;
+    double var = 1.0;
+    static int has_spare = 0;
+    static double spare;
+
+    if (has_spare)
+    {
+        has_spare = 0;
+        return mean + var * spare;
+    }
+
+    double u1, u2, z0, z1;
+
+    // Generate two uniform random numbers in the interval (0, 1]
+    u1 = ((double)rand() / RAND_MAX);
+    u2 = ((double)rand() / RAND_MAX);
+
+    z0 = sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
+    z1 = sqrt(-2 * log(u1)) * sin(2 * M_PI * u2);
+
+    // Cache one of the generated values for the next call
+    spare = z1;
+    has_spare = 1;
+
+    return mean + var * z0;
+}
+
 void nn_init_weights(Matrix *m)
 {
+    static int SEED_INITIALIZED = 0;
     if (!SEED_INITIALIZED)
     {
         srand(time(NULL));
@@ -48,7 +77,7 @@ void nn_init_weights(Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            m->data[y][x] = nn_rand_double();
+            m->data[y][x] = nn_normal_rand_double();
         }
     }
 }

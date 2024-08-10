@@ -17,7 +17,6 @@ typedef struct ReLU
 typedef struct MSE
 {
     Matrix *y_yhat;
-    // Matrix *y;
 } MSE;
 
 LinearLayer *nn_new_linear_layer(int input_size, int output_size);
@@ -37,5 +36,6 @@ void nn_init_weights(Matrix *m);
 void nn_normalize_weights(Matrix *m);
 
 Matrix *nn_mse_forward(MSE *l, Matrix *y_hat, Matrix *y);
+double nn_normal_rand_double();
 
 #endif // NN_H
