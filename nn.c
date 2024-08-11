@@ -77,7 +77,7 @@ void nn_init_weights(Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            m->data[y][x] = nn_normal_rand_double();
+            m->data[y * m->cols + x] = nn_normal_rand_double();
         }
     }
 }
@@ -100,13 +100,13 @@ Matrix *nn_relu_forward(ReLU *r, Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            if (m->data[y][x] <= 0)
+            if (m->data[y * m->cols + x] <= 0)
             {
-                result->data[y][x] = 0;
+                result->data[y * m->cols + x] = 0;
             }
             else
             {
-                result->data[y][x] = m->data[y][x];
+                result->data[y * m->cols + x] = m->data[y * m->cols + x];
             }
         }
     }
@@ -145,10 +145,10 @@ Matrix *nn_relu_backward(ReLU *relu, Matrix *next_grad)
     {
         for (size_t x = 0; x < drelu->cols; x++)
         {
-            drelu->data[y][x] = relu->x->data[y][x] <= 0 ? 0 : relu->x->data[y][x];
+            drelu->data[y * drelu->cols + x] = relu->x->data[y * drelu->cols + x] <= 0 ? 0 : next_grad->data[y * drelu->cols + x];
         }
     }
-    return element_wise_mats_product(drelu, next_grad);
+    return drelu;
 }
 
 Matrix *nn_mse_grad(MSE *l)

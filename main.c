@@ -5,10 +5,10 @@
 #include "nn.h"
 
 #define INPUT_SIZE 1
-#define HIDDEN_SIZE 10
+#define HIDDEN_SIZE 20
 #define OUTPUT_SIZE 1
-#define LEARNING_RATE 0.00001
-#define EPOOCHS 10
+#define LEARNING_RATE 0.0000001
+#define EPOOCHS 1000
 #define NUM_SAMPLES 1000
 
 #include <math.h>
@@ -62,7 +62,7 @@ int main(void)
     for (int i = 0; i < NUM_SAMPLES; i++)
     {
         samples[i] = new_mat(1, INPUT_SIZE);
-        double random_value = (nn_normal_rand_double() * 10);
+        double random_value = (nn_rand_double() * 100);
         fill_matrix_with_constant(samples[i], random_value);
     }
 
@@ -77,7 +77,9 @@ int main(void)
             Matrix *h_out_activ = nn_relu_forward(relu, h_out);
             Matrix *out = nn_linear_forward(o, h_out_activ);
             Matrix *loss = nn_mse_forward(mse, out, y);
-            loss_add_value(losses, loss->data[0][0]);
+            // loss_add_value(losses, loss->data[0]);
+            printf("loss:\n");
+            print_matrix(loss);
 
             Matrix *grad;
             grad = nn_mse_grad(mse);
@@ -86,18 +88,21 @@ int main(void)
             nn_linear_backward(h, grad, LEARNING_RATE);
         }
     }
-    write_to_file(losses);
-    double c = 20;
-    int end = 0;
-    while (c > end)
+    // return 0;
+    // write_to_file(losses);
+    int c = 0;
+    int end = 100;
+
+    while (c < end)
     {
+        // double a = (c % 5) == 0 ? c : end - c;
         Matrix *x = new_mat(1, 1);
         fill_matrix_with_constant(x, c);
         Matrix *h_out = nn_linear_forward(h, x);
         Matrix *h_out_activ = nn_relu_forward(relu, h_out);
         Matrix *out = nn_linear_forward(o, h_out_activ);
-        printf("x = %f, x square = %f\n", x->data[0][0], out->data[0][0]);
-        c--;
+        printf("x = %f, x square = %f\n", x->data[0], out->data[0]);
+        c++;
     }
 
     return 0;

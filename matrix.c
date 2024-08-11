@@ -17,11 +17,7 @@ Matrix *new_mat(int rows, int cols)
     Matrix *m = malloc(sizeof(Matrix));
     m->cols = cols;
     m->rows = rows;
-    m->data = malloc(sizeof(double *) * rows);
-    for (size_t i = 0; i < rows; i++)
-    {
-        m->data[i] = malloc(sizeof(double) * cols);
-    }
+    m->data = malloc(sizeof(double *) * rows * cols);
     return m;
 }
 
@@ -30,10 +26,6 @@ void free_mat(Matrix *m)
     if (m == NULL)
     {
         return;
-    }
-    for (size_t y = 0; y < m->rows; y++)
-    {
-        free(m->data[y]);
     }
     free(m->data);
     free(m);
@@ -45,17 +37,18 @@ void fill_matrix_starting_with(Matrix *m, double value)
     {
         for (int x = 0; x < m->cols; x++)
         {
-            m->data[y][x] = value++;
+            m->data[y * m->cols + x] = value++;
         }
     }
 }
+
 void fill_matrix_with_constant(Matrix *m, double value)
 {
     for (int y = 0; y < m->rows; y++)
     {
         for (int x = 0; x < m->cols; x++)
         {
-            m->data[y][x] = value;
+            m->data[y * m->cols + x] = value;
         }
     }
 }
@@ -66,7 +59,7 @@ void set_mat_data(Matrix *m, double *values)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            m->data[y][x] = values[y * m->cols + x];
+            m->data = values;
         }
     }
 }
@@ -79,7 +72,7 @@ void set_mat_value(Matrix *m, double value, int x, int y)
         fprintf(stderr, "matrix size = (%ix%i), position: y=%i, x=%i\n", m->rows, m->cols, y, x);
         exit(-1);
     }
-    m->data[y][x] = value;
+    m->data[y * m->cols + x] = value;
 }
 
 void print_matrix(Matrix *m)
@@ -94,7 +87,7 @@ void print_matrix(Matrix *m)
     {
         for (int x = 0; x < m->cols; x++)
         {
-            printf("%f ", m->data[y][x]);
+            printf("%f ", m->data[y * m->cols + x]);
         }
         printf("\n");
     }
@@ -107,7 +100,7 @@ Matrix *transpose(Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            new_matrix->data[x][y] = m->data[y][x];
+            new_matrix->data[x * m->rows + y] = m->data[y * m->cols + x];
         }
     }
     return new_matrix;
@@ -124,7 +117,7 @@ Matrix *add_mats(Matrix *m1, Matrix *m2)
     {
         for (size_t x = 0; x < m1->cols; x++)
         {
-            result_mat->data[y][x] = m1->data[y][x] + m2->data[y][x];
+            result_mat->data[y * m1->cols + x] = m1->data[y * m1->cols + x] + m2->data[y * m1->cols + x];
         }
     }
     return result_mat;
@@ -145,7 +138,7 @@ Matrix *element_wise_mats_product(Matrix *m1, Matrix *m2)
     {
         for (size_t x = 0; x < m1->cols; x++)
         {
-            result->data[y][x] = m1->data[y][x] + m2->data[y][x];
+            result->data[y * m1->cols + x] = m1->data[y * m1->cols + x] * m2->data[y * m1->cols + x];
         }
     }
     return result;
@@ -157,15 +150,15 @@ Matrix *subtract_mats(Matrix *m1, Matrix *m2)
     {
         return NULL;
     }
-    Matrix *result_mat = new_mat(m1->rows, m1->cols);
+    Matrix *result = new_mat(m1->rows, m1->cols);
     for (size_t y = 0; y < m1->rows; y++)
     {
         for (size_t x = 0; x < m1->cols; x++)
         {
-            result_mat->data[y][x] = m1->data[y][x] - m2->data[y][x];
+            result->data[y * m1->cols + x] = m1->data[y * m1->cols + x] - m2->data[y * m1->cols + x];
         }
     }
-    return result_mat;
+    return result;
 }
 
 Matrix *mul_mats(Matrix *m1, Matrix *m2)
@@ -182,23 +175,21 @@ Matrix *mul_mats(Matrix *m1, Matrix *m2)
         exit(-1);
     }
 
-    // result matrix size = (rows_1 X cols_2)
-    Matrix *result = new_mat(m1->rows, m2->cols);
+    size_t rows = m1->rows;
+    size_t cols = m2->cols;
+    size_t inners = m1->cols;
+    Matrix *result = new_mat(rows, cols);
 
     // for each row in m1,
-    for (size_t row_1 = 0; row_1 < m1->rows; row_1++)
+    for (size_t row = 0; row < rows; row++)
     {
-        // for each col in m2:
-        for (size_t col_2 = 0; col_2 < m2->cols; col_2++)
+        for (size_t i = 0; i < inners; i++)
         {
-            double sum = 0;
-            // for value in a row_1 and col_2
-            //      do: value_m1 * value_m2
-            for (size_t i = 0; i < m1->cols; i++)
+            for (size_t col = 0; col < cols; col++)
             {
-                sum += m1->data[row_1][i] * m2->data[i][col_2];
+                result->data[row * cols + col] +=
+                    m1->data[row * m1->cols + i] * m2->data[i * m2->cols + col];
             }
-            result->data[row_1][col_2] = sum;
         }
     }
     return result;
@@ -212,11 +203,12 @@ Matrix *element_wise_pow(Matrix *m, double e)
         // for each col in m2:
         for (size_t x = 0; x < m->cols; x++)
         {
-            result->data[y][x] = pow(m->data[y][x], e);
+            result->data[y * result->cols + x] = pow(m->data[y * result->cols + x], e);
         }
     }
     return result;
 }
+
 Matrix *divide_by_value(Matrix *m, double value)
 {
     Matrix *result = new_mat(m->rows, m->cols);
@@ -224,7 +216,7 @@ Matrix *divide_by_value(Matrix *m, double value)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            result->data[y][x] = m->data[y][x] / value;
+            result->data[y * result->cols + x] = m->data[y * result->cols + x] / value;
         }
     }
     return result;
@@ -236,7 +228,7 @@ Matrix *multiply_with_value(Matrix *m, double value)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            result->data[y][x] = m->data[y][x] * value;
+            result->data[y * result->cols + x] = m->data[y * result->cols + x] * value;
         }
     }
     return result;
@@ -263,7 +255,7 @@ int mat_equals(Matrix *m1, Matrix *m2)
     {
         for (size_t x = 0; x < m1->cols; x++)
         {
-            if (m1->data[y][x] != m2->data[y][x])
+            if (m1->data[y * m1->cols + x] != m2->data[y * m1->cols + x])
             {
                 printf("%lu, %lu", y, x);
                 return 0;
@@ -280,9 +272,9 @@ double find_max(Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            if (m->data[y][x] > max)
+            if (m->data[y * m->cols + x] > max)
             {
-                max = m->data[y][x];
+                max = m->data[y * m->cols + x];
             }
         }
     }
@@ -296,9 +288,9 @@ double find_min(Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
-            if (m->data[y][x] < min)
+            if (m->data[y * m->cols + x] < min)
             {
-                min = m->data[y][x];
+                min = m->data[y * m->cols + x];
             }
         }
     }
