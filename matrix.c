@@ -200,7 +200,6 @@ Matrix *element_wise_pow(Matrix *m, double e)
     Matrix *result = new_mat(m->rows, m->cols);
     for (size_t y = 0; y < m->rows; y++)
     {
-        // for each col in m2:
         for (size_t x = 0; x < m->cols; x++)
         {
             result->data[y * result->cols + x] = pow(m->data[y * result->cols + x], e);

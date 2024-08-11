@@ -88,7 +88,6 @@ Matrix *nn_linear_forward(LinearLayer *l, Matrix *x)
     Matrix *w_t = transpose(l->w);
     Matrix *out = mul_mats(x, w_t);
     Matrix *out_biased = add_mats(out, l->b);
-    free_mat(out);
     return out_biased;
 }
 

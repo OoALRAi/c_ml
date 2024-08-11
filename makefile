@@ -24,4 +24,4 @@ matrix.o: matrix.c matrix.h
 nn.o: nn.c nn.h
 	$(CC) $(FLAGS) -c nn.c
 clean:
-	rm *.o output
+	rm *.o output test_matrix

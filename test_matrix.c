@@ -3,11 +3,10 @@
 
 int main()
 {
-    Matrix *m2 = new_mat(2000, 500);
-    Matrix *m1 = new_mat(500, 2000);
+    Matrix *m1 = new_mat(4, 3);
     fill_matrix_starting_with(m1, 1);
-    fill_matrix_starting_with(m2, 1);
-    Matrix *r = mul_mats(m1, m2);
+    Matrix *r = multiply_with_value(m1, 10.0);
+    print_matrix(r);
 
     return 0;
 }
