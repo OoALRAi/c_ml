@@ -100,6 +100,7 @@ Matrix *transpose(Matrix *m)
     {
         for (size_t x = 0; x < m->cols; x++)
         {
+            // TODO: solve the problem either by reusing the 2d array as matrix or use strided matrix!
             new_matrix->data[x * m->rows + y] = m->data[y * m->cols + x];
         }
     }
