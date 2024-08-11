@@ -5,7 +5,7 @@
 #include "nn.h"
 
 #define INPUT_SIZE 1
-#define HIDDEN_SIZE 50
+#define HIDDEN_SIZE 10
 #define OUTPUT_SIZE 1
 #define LEARNING_RATE 0.00001
 #define EPOOCHS 1000
@@ -77,6 +77,7 @@ int main(void)
             Matrix *h_out_activ = nn_relu_forward(relu, h_out);
             Matrix *out = nn_linear_forward(o, h_out_activ);
             Matrix *loss = nn_mse_forward(mse, out, y);
+
             loss_add_value(losses, loss->data[0]);
 
             Matrix *grad;
@@ -84,6 +85,7 @@ int main(void)
             grad = nn_linear_backward(o, grad, LEARNING_RATE);
             grad = nn_relu_backward(relu, grad);
             nn_linear_backward(h, grad, LEARNING_RATE);
+            exit(0);
         }
     }
     // return 0;

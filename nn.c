@@ -86,6 +86,9 @@ Matrix *nn_linear_forward(LinearLayer *l, Matrix *x)
 {
     l->x = x;
     Matrix *w_t = transpose(l->w);
+    printf("---------->\n");
+    print_matrix(w_t);
+    printf("<----------\n");
     Matrix *out = mul_mats(x, w_t);
     Matrix *out_biased = add_mats(out, l->b);
     return out_biased;
@@ -101,7 +104,7 @@ Matrix *nn_relu_forward(ReLU *r, Matrix *m)
         {
             if (m->data[y * m->cols + x] <= 0)
             {
-                result->data[y * m->cols + x] = 0;
+                result->data[y * m->cols + x] = 0.0;
             }
             else
             {

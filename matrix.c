@@ -17,7 +17,7 @@ Matrix *new_mat(int rows, int cols)
     Matrix *m = malloc(sizeof(Matrix));
     m->cols = cols;
     m->rows = rows;
-    m->data = malloc(sizeof(double *) * rows * cols);
+    m->data = malloc(sizeof(double *) * rows * cols + 1);
     return m;
 }
 
