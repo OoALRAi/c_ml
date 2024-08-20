@@ -2,20 +2,19 @@
 #define MATRIX_H
 
 // a matrix is represented as (rows X cols)
-typedef struct Matrix
-{
-    int cols;
-    int rows;
-    double *data;
+typedef struct Matrix {
+  int cols;
+  int rows;
+  double **data;
 } Matrix;
 
-Matrix *new_mat(int cols, int rows);
+Matrix *new_mat(int rows, int cols);
 void free_mat(Matrix *m);
 
 void fill_matrix_starting_with(Matrix *m, double value);
 void fill_matrix_with_constant(Matrix *m, double value);
 
-void set_mat_data(Matrix *m, double *values);
+// void set_mat_data(Matrix *m, double *values);
 void set_mat_value(Matrix *m, double value, int x, int y);
 
 void print_matrix(Matrix *m);
