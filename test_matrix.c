@@ -1,13 +1,36 @@
 #include "matrix.h"
-// #include <stdio.h>
+#include "nn.h"
+#include <math.h>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int main() {
-  Matrix *m1 = new_mat(2, 3);
-  fill_matrix_starting_with(m1, 1);
-  Matrix *m2 = transpose(m1);
-  print_matrix(m1);
-  print_matrix(m2);
-  Matrix *r = mul_mats(m1, m2);
-  print_matrix(r);
+#include <stdio.h>
+double max(double *arr)
+{
+  double maxx = arr[0];
+  for (int i = 0; i < 100000; i++)
+  {
+    if (maxx < arr[i])
+    {
+      maxx = arr[i];
+    }
+  }
+  return maxx;
+}
+
+int main()
+{
+  int counter = 0;
+  double arr[100000];
+
+  while (counter < 100000)
+  {
+    srand(time(NULL));
+    arr[counter] = nn_normal_rand_double() * 10;
+    counter++;
+  }
+  double maxx = max(arr);
+  printf("max value = %f\n", maxx);
   return 0;
 }
