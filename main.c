@@ -61,7 +61,7 @@ int main(void)
   for (int i = 0; i < NUM_SAMPLES; i++)
   {
     samples[i] = new_mat(1, INPUT_SIZE);
-    double random_value = (nn_rand_double() * 10);
+    double random_value = (nn_normal_rand_double() * 10);
     fill_matrix_with_constant(samples[i], random_value);
   }
 
@@ -107,7 +107,7 @@ int main(void)
   {
     // double a = (c % 5) == 0 ? c : end - c;
     Matrix *x = new_mat(1, 1);
-    double random_value = nn_rand_double() * 10;
+    double random_value = nn_normal_rand_double() * 10;
     fill_matrix_with_constant(x, random_value);
     Matrix *y = element_wise_pow(x, 2);
     Matrix *h_out = nn_linear_forward(h, x);
