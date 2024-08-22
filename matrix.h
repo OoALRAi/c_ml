@@ -2,13 +2,15 @@
 #define MATRIX_H
 
 // a matrix is represented as (rows X cols)
-typedef struct Matrix {
+typedef struct Matrix
+{
   int cols;
   int rows;
   double **data;
 } Matrix;
 
 Matrix *new_mat(int rows, int cols);
+Matrix *ones(int rows, int cols);
 void free_mat(Matrix *m);
 
 void fill_matrix_starting_with(Matrix *m, double value);

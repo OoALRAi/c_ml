@@ -8,7 +8,6 @@ output: main.o matrix.o nn.o
 
 nn_square: nn_example_1.o matrix.o nn.o 
 	$(CC) $(FLAGS) nn_example_1.o matrix.o nn.o -o nn_square -lm
-	./nn_square
 
 nn_example_1.o: nn_example_1.c
 	$(CC) $(FLAGS) -c nn_example_1.c
