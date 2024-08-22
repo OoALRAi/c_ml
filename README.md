@@ -2,6 +2,9 @@
  a very simple implementation from scratch where no third party library has been used.
  it includes a very simple matrix library to enable matrix multiplication for forward pass and backward pass
 
+### NOTE:
+    the implementation is not memory safe and leaks too much memory!!
+
 ### usage:
 * first example learns to square numbers
 ```bash
