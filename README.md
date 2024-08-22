@@ -14,6 +14,7 @@ make nn_square
 * for greater ranges the model may explode during training phase!
 
 ### TODOS:
-* implement sigmoid
+* implement sigmoid (DONE)
+* test sigmoid
 * implement softmax
 * solve mnist recognition using FFNN only
